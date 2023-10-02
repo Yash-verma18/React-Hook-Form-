@@ -1,6 +1,7 @@
 import { useForm, useFieldArray } from "react-hook-form";
 
 import { DevTool } from "@hookform/devtools";
+import { useEffect } from "react";
 let renderCount = 0;
 
 type FormValues = {
@@ -38,7 +39,7 @@ export const YoutubeForm = () => {
     },
   });
 
-  const { register, control, handleSubmit, formState } = form;
+  const { register, control, handleSubmit, formState, watch } = form;
 
   const { errors } = formState;
 
@@ -54,11 +55,23 @@ export const YoutubeForm = () => {
     control,
   });
 
-  console.log("fields", fields);
+  // const userWatch = watch("username");
+  // const userWatch = watch(["username", "email"]);
+  // const watchForm = watch();
+
   renderCount++;
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   return (
     <div>
       <h2>Youtube Form ({renderCount / 2}) </h2>
+      {/* <h2>Watched Value {JSON.stringify(watchForm)}</h2> */}
 
       {/* no validate form attribute will prevent the default browser validation and allowing react hook form to handle the validation on thet field  */}
 
