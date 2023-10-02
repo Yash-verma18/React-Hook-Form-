@@ -39,7 +39,15 @@ export const YoutubeForm = () => {
     },
   });
 
-  const { register, control, handleSubmit, formState, watch, getValues } = form;
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    watch,
+    getValues,
+    setValue,
+  } = form;
 
   // getValues is a function that will return the current value of the form fields, unlike watch this will not re-render the component when the value of the watched field changes,
 
@@ -76,6 +84,17 @@ export const YoutubeForm = () => {
     // to log only selected values :
     console.log("get values of username", getValues("username"));
     console.log("get values of username", getValues(["username", "channel"]));
+  };
+
+  const handleSetValue = () => {
+    setValue("username", "Bruce Wayne");
+
+    // use istouched or isDirty to check if the field has been touched or not
+    // setValue("username", "Bruce Wayne", {
+    //   shouldValidate: true,
+    //   shouldDirty: true,
+    //   shouldTouch: true,
+    // });
   };
 
   return (
@@ -257,6 +276,14 @@ export const YoutubeForm = () => {
           }}
         >
           Get Values
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            handleSetValue();
+          }}
+        >
+          Set Value
         </button>
       </form>
       <DevTool control={control} />
