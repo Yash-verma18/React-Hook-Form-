@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 
 import { DevTool } from "@hookform/devtools";
 let renderCount = 0;
@@ -12,7 +12,12 @@ type FormValues = {
     facebook: string;
   };
   phoneNumbers: string[];
+  phNumbers: {
+    number: string;
+  }[];
 };
+
+// useFeidArray works only with object values, that is why phNumbers is an array of objects, and each object contains a property called number, where we will store the phone number value
 
 export const YoutubeForm = () => {
   const form = useForm<FormValues>({
@@ -25,6 +30,7 @@ export const YoutubeForm = () => {
         facebook: "",
       },
       phoneNumbers: ["", ""],
+      phNumbers: [{ number: "" }],
     },
   });
 
@@ -37,8 +43,14 @@ export const YoutubeForm = () => {
     console.log("form submitted", data);
   };
 
-  console.log("errors", errors);
+  // Lets invoke the useFieldArray hook
+  const { fields, append, remove } = useFieldArray({
+    name: "phNumbers",
+    // control is getting the control property from the useForm hook
+    control,
+  });
 
+  console.log("fields", fields);
   renderCount++;
   return (
     <div>
@@ -139,6 +151,44 @@ export const YoutubeForm = () => {
             {...register("phoneNumbers.1")}
           />
         </div>
+
+        <div>
+          <label>List of phone numbers</label>
+          <div>
+            {/* we are using the map function to loop through the fields array and render the input fields */}
+            {fields.map((field, index) => {
+              return (
+                <div className="form-control" key={field.id}>
+                  <input
+                    type="text"
+                    {...register(`phNumbers.${index}.number` as const)}
+                  />
+                  {index > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        // this will remove the entry from our phnumbers array
+                        remove(index);
+                      }}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+            <button
+              type="button"
+              onClick={() => {
+                // this will add a new entry into our phnumbers array
+                append({ number: "" });
+              }}
+            >
+              Add Phone Number
+            </button>
+          </div>
+        </div>
+
         <button>Submit</button>
       </form>
       <DevTool control={control} />
