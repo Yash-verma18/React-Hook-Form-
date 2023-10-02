@@ -15,6 +15,8 @@ type FormValues = {
   phNumbers: {
     number: string;
   }[];
+  age: number;
+  dob: Date;
 };
 
 // useFeidArray works only with object values, that is why phNumbers is an array of objects, and each object contains a property called number, where we will store the phone number value
@@ -31,6 +33,8 @@ export const YoutubeForm = () => {
       },
       phoneNumbers: ["", ""],
       phNumbers: [{ number: "" }],
+      age: 0,
+      dob: new Date(),
     },
   });
 
@@ -187,6 +191,39 @@ export const YoutubeForm = () => {
               Add Phone Number
             </button>
           </div>
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="age">Age</label>
+          <input
+            type="number"
+            id="age"
+            {...register("age", {
+              valueAsNumber: true,
+              required: {
+                value: true,
+                message: "Age is required",
+              },
+            })}
+          />
+
+          <p className="error">{errors.age?.message}</p>
+        </div>
+        <div className="form-control">
+          <label htmlFor="dob">DOB</label>
+          <input
+            type="date"
+            id="dob"
+            {...register("dob", {
+              valueAsDate: true,
+              required: {
+                value: true,
+                message: "Dob is required",
+              },
+            })}
+          />
+
+          <p className="error">{errors.dob?.message}</p>
         </div>
 
         <button>Submit</button>
