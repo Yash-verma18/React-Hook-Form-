@@ -39,7 +39,9 @@ export const YoutubeForm = () => {
     },
   });
 
-  const { register, control, handleSubmit, formState, watch } = form;
+  const { register, control, handleSubmit, formState, watch, getValues } = form;
+
+  // getValues is a function that will return the current value of the form fields, unlike watch this will not re-render the component when the value of the watched field changes,
 
   const { errors } = formState;
 
@@ -61,12 +63,20 @@ export const YoutubeForm = () => {
 
   renderCount++;
 
-  useEffect(() => {
-    const subscription = watch((value) => {
-      console.log(value);
-    });
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  // useEffect(() => {
+  //   const subscription = watch((value) => {
+  //     console.log(value);
+  //   });
+  //   return () => subscription.unsubscribe();
+  // }, [watch]);
+
+  const handleGetValues = () => {
+    // console.log("get values", getValues());
+
+    // to log only selected values :
+    console.log("get values of username", getValues("username"));
+    console.log("get values of username", getValues(["username", "channel"]));
+  };
 
   return (
     <div>
@@ -240,6 +250,14 @@ export const YoutubeForm = () => {
         </div>
 
         <button>Submit</button>
+        <button
+          type="button"
+          onClick={() => {
+            handleGetValues();
+          }}
+        >
+          Get Values
+        </button>
       </form>
       <DevTool control={control} />
     </div>
