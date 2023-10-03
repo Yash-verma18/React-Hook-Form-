@@ -22,6 +22,10 @@ type FormValues = {
 
 // useFeidArray works only with object values, that is why phNumbers is an array of objects, and each object contains a property called number, where we will store the phone number value
 
+/*
+  When a feild is disabled the field becomes undefined and the validation is also disabled. 
+*/
+
 export const YoutubeForm = () => {
   const form = useForm<FormValues>({
     defaultValues: {
@@ -54,11 +58,11 @@ export const YoutubeForm = () => {
   const { errors, touchedFields, dirtyFields, isDirty } = formState;
 
   // touched : user has focused on the field and then moved away from it
-  console.log("touched", touchedFields);
+  // console.log("touched", touchedFields);
 
   // dirty : user has typed something in the field or modified the value of the field this value is compared with the default value of the field.
-  console.log("dirty", dirtyFields);
-  console.log("isDirty", isDirty);
+  // console.log("dirty", dirtyFields);
+  // console.log("isDirty", isDirty);
 
   const onSubmit = (data: FormValues) => {
     // handle submit allows us to get the latest value of data from the form
@@ -117,6 +121,7 @@ export const YoutubeForm = () => {
           <input
             type="text"
             id="username"
+            disabled
             {...register("username", {
               required: "Username is required",
             })}
@@ -182,7 +187,14 @@ export const YoutubeForm = () => {
         </div>
         <div className="form-control">
           <label htmlFor="twitter">Twitter</label>
-          <input type="text" id="twitter" {...register("social.twitter")} />
+          <input
+            type="text"
+            id="twitter"
+            {...register("social.twitter", {
+              disabled: watch("channel") === "" ? true : false,
+              required: "Twitter is required",
+            })}
+          />
         </div>
         <div className="form-control">
           <label htmlFor="facebook">Facebook</label>
