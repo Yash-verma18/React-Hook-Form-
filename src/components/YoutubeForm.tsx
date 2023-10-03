@@ -1,4 +1,4 @@
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
 
 import { DevTool } from "@hookform/devtools";
 import { useEffect } from "react";
@@ -108,6 +108,10 @@ export const YoutubeForm = () => {
     // });
   };
 
+  const onError = (errors: FieldErrors<FormValues>) => {
+    console.log("Form Errors", errors);
+  };
+
   return (
     <div>
       <h2>Youtube Form ({renderCount / 2}) </h2>
@@ -115,7 +119,7 @@ export const YoutubeForm = () => {
 
       {/* no validate form attribute will prevent the default browser validation and allowing react hook form to handle the validation on thet field  */}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit, onError)}>
         <div className="form-control">
           <label htmlFor="username">Username </label>
           <input
