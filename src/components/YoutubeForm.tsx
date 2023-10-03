@@ -51,7 +51,14 @@ export const YoutubeForm = () => {
 
   // getValues is a function that will return the current value of the form fields, unlike watch this will not re-render the component when the value of the watched field changes,
 
-  const { errors } = formState;
+  const { errors, touchedFields, dirtyFields, isDirty } = formState;
+
+  // touched : user has focused on the field and then moved away from it
+  console.log("touched", touchedFields);
+
+  // dirty : user has typed something in the field or modified the value of the field this value is compared with the default value of the field.
+  console.log("dirty", dirtyFields);
+  console.log("isDirty", isDirty);
 
   const onSubmit = (data: FormValues) => {
     // handle submit allows us to get the latest value of data from the form
