@@ -1,6 +1,7 @@
 import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
 
 import { DevTool } from "@hookform/devtools";
+import { useEffect } from "react";
 // import { useEffect } from "react";
 let renderCount = 0;
 
@@ -51,6 +52,7 @@ export const YoutubeForm = () => {
     watch,
     getValues,
     setValue,
+    reset,
   } = form;
 
   // getValues is a function that will return the current value of the form fields, unlike watch this will not re-render the component when the value of the watched field changes,
@@ -77,6 +79,8 @@ export const YoutubeForm = () => {
   const onSubmit = (data: FormValues) => {
     // handle submit allows us to get the latest value of data from the form
     console.log("form submitted", data);
+
+    // Its recommended to NOT CALL reset function on OnSubmit, instead use the isSubmitSuccessful property to check if the form was submitted successfully and then call the reset function
   };
 
   // Lets invoke the useFieldArray hook
@@ -133,7 +137,13 @@ export const YoutubeForm = () => {
 
   // 4. isSubmitted: boolean; (if the form submission is successful this value will be true and this remains true until the form is reset)
 
-  console.log({ isSubmitSuccessful, submitCount });
+  // console.log({ isSubmitSuccessful, submitCount });
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <div>
@@ -315,6 +325,14 @@ export const YoutubeForm = () => {
         </div>
 
         <button disabled={!isDirty || !isValid || isSubmitting}>Submit</button>
+        <button
+          type="button"
+          onClick={() => {
+            reset();
+          }}
+        >
+          Reset
+        </button>
         <button
           type="button"
           onClick={() => {
