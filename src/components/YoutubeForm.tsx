@@ -42,6 +42,10 @@ export const YoutubeForm = () => {
       age: 0,
       dob: new Date(),
     },
+    // the mode property allows us to change the mode of validation, You can pass the mode when you want to trigger the validation, By default value is set to onSubmit. We can change the validation mode to onChange, onBlur, onSubmit, onTouched, all, onChange, onBlur, onSubmit, onTouched, all
+    // mode: "onTouched",
+    // mode: "onChange",
+    mode: "all", // this will trigger the validation on onBlur and onChange
   });
 
   const {
@@ -199,6 +203,7 @@ export const YoutubeForm = () => {
                     "This domain is not supported"
                   );
                 },
+                // try to add : this email : Sincere@april.biz
                 emailAvailable: async (fieldValue) => {
                   const response = await fetch(
                     "https://jsonplaceholder.typicode.com/users?email=" +
