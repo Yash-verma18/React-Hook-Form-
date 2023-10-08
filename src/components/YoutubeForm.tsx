@@ -1,7 +1,7 @@
 import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
 
 import { DevTool } from "@hookform/devtools";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 let renderCount = 0;
 
 type FormValues = {
@@ -55,7 +55,7 @@ export const YoutubeForm = () => {
 
   // getValues is a function that will return the current value of the form fields, unlike watch this will not re-render the component when the value of the watched field changes,
 
-  const { errors, touchedFields, dirtyFields, isDirty } = formState;
+  const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
 
   // touched : user has focused on the field and then moved away from it
   // console.log("touched", touchedFields);
@@ -195,7 +195,7 @@ export const YoutubeForm = () => {
             type="text"
             id="twitter"
             {...register("social.twitter", {
-              disabled: watch("channel") === "" ? true : false,
+              // disabled: watch("channel") === "" ? true : false,
               required: "Twitter is required",
             })}
           />
@@ -291,7 +291,7 @@ export const YoutubeForm = () => {
           <p className="error">{errors.dob?.message}</p>
         </div>
 
-        <button>Submit</button>
+        <button disabled={!isDirty || !isValid}>Submit</button>
         <button
           type="button"
           onClick={() => {
