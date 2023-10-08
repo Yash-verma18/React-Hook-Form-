@@ -55,7 +55,17 @@ export const YoutubeForm = () => {
 
   // getValues is a function that will return the current value of the form fields, unlike watch this will not re-render the component when the value of the watched field changes,
 
-  const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
+  const {
+    errors,
+    touchedFields,
+    dirtyFields,
+    isDirty,
+    isValid,
+    isSubmitSuccessful,
+    isSubmitted,
+    isSubmitting,
+    submitCount,
+  } = formState;
 
   // touched : user has focused on the field and then moved away from it
   // console.log("touched", touchedFields);
@@ -111,6 +121,19 @@ export const YoutubeForm = () => {
   const onError = (errors: FieldErrors<FormValues>) => {
     console.log("Form Errors", errors);
   };
+
+  // Form Submission State : useful for tracking the progress and outcome of the form submission
+  // 1. isSubmitting: boolean; (if a form is in the process of submitting, when the form is submitted this value will be true and becomes false when the form submission is completed)
+
+  // isSubmitting has one great usecase : so when user clicks the submit btn first time, we want to disable the submit btn, so that the user cannot click the submit btn again, so we can use the isSubmitting property to disable the submit btn when the form is submitting. Hence preventing multiple form submissions of the same form.
+
+  // 2. submitCount: number; (this property indicates the number of times the form has been submitted, its incremented by 1 every time the form is submitted, even if the form contains errors, and submit btn is not disabled, this value will be incremented by 1)
+
+  // 3. isSubmitSuccessful: boolean; (this property indicates it the form was submitted successfully without any run time error )
+
+  // 4. isSubmitted: boolean; (if the form submission is successful this value will be true and this remains true until the form is reset)
+
+  console.log({ isSubmitSuccessful, submitCount });
 
   return (
     <div>
@@ -291,7 +314,7 @@ export const YoutubeForm = () => {
           <p className="error">{errors.dob?.message}</p>
         </div>
 
-        <button disabled={!isDirty || !isValid}>Submit</button>
+        <button disabled={!isDirty || !isValid || isSubmitting}>Submit</button>
         <button
           type="button"
           onClick={() => {
